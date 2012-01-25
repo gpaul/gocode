@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"sync"
 )
 
@@ -192,10 +193,23 @@ func pathAndAlias(imp *ast.ImportSpec) (string, string) {
 
 func findGoDagPackage(imp, filedir string) (string, bool) {
 	// Support godag directory structure
-	dir, pkg := filepath.Split(imp)
-	godag_pkg := filepath.Join(filedir, "..", dir, "_obj", pkg+".a")
-	if fileExists(godag_pkg) {
-		return godag_pkg, true
+	depth := len(strings.Split(filedir, string(filepath.Separator)))
+	for i := 0; i < depth; i++ {
+		dots := []string{}
+		for k := 0; k < i; k++ {
+			dots = append(dots, "..")
+		}
+
+		path := []string{filedir}
+		path = append(path, dots...)
+		path = append(path, imp)
+		path = append(path, "_obj")
+		path = append(path, imp+".a")
+
+		godag_pkg := filepath.Join(path...)
+		if fileExists(godag_pkg) {
+			return godag_pkg, true
+		}
 	}
 	return "", false
 }

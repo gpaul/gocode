@@ -1,11 +1,9 @@
 package main
 
-import "os"
-
-var test map[string]os.Error
+var test map[string]error
 
 func main() {
 	for key, value := range test {
-		
+
 	}
 }
