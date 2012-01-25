@@ -226,5 +226,5 @@ func makeSureConfigDirExists() {
 }
 
 func configFile() string {
-	return filepath.Join(xdgHomeDir(), "gocode", "config.ini")path
+	return filepath.Join(xdgHomeDir(), "gocode", "config.ini")
 }
